@@ -39,10 +39,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 			.csrf().disable()
 				.authorizeRequests()
 				.antMatchers("index","/","/css/*","/js/*").permitAll()
-				.antMatchers("/api/**").hasRole(ApplicationUserRole.STUDENT.name())
-				.antMatchers(HttpMethod.POST,"/management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE.name())
-				.antMatchers(HttpMethod.PUT,"/management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE.name())
-				.antMatchers(HttpMethod.DELETE,"/management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE.name())
+				.antMatchers("/api/**").hasRole(ApplicationUserRole.STUDENT.name()) // antMatcher ORDER MATTERS ide sekvencijalno!!!!
+				.antMatchers(HttpMethod.POST,"/management/api/***").hasAuthority(ApplicationUserPermission.COURSE_WRITE.getPermission())
+				
+				.antMatchers(HttpMethod.PUT,"/management/api/***").hasAuthority(ApplicationUserPermission.COURSE_WRITE.getPermission())
+				
+				.antMatchers(HttpMethod.DELETE,"/management/api/***").hasAuthority(ApplicationUserPermission.COURSE_WRITE.getPermission())
+				
 				.antMatchers("/management/api/**").hasAnyRole(ApplicationUserRole.ADMIN.name(),ApplicationUserRole.ADMINTRAINEE.name())
 				.anyRequest()
 				.authenticated()
@@ -57,16 +60,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 						.username("bane")
 						.password(passwordEncoder.encode("password"))
 //						.roles(ApplicationUserRole.STUDENT.name()) //ROLE_STUDENT
+						.authorities(ApplicationUserRole.STUDENT.getGrantedAuthorities())
 						.build();
 		UserDetails mikiUser = User.builder()
 				.username("miki")
 				.password(passwordEncoder.encode("password"))
 //				.roles(ApplicationUserRole.ADMIN.name()) //ROLE_ADMMIN
+				.authorities(ApplicationUserRole.ADMIN.getGrantedAuthorities())
 				.build();
 		UserDetails tomUser = User.builder()
 				.username("tom")
 				.password(passwordEncoder.encode("password"))
 //				.roles(ApplicationUserRole.ADMINTRAINEE.name())  //ROLE_ADMINTRAINEE
+				.authorities(ApplicationUserRole.ADMINTRAINEE.getGrantedAuthorities())
 				.build();
 		return new InMemoryUserDetailsManager(
 				baneUser,mikiUser,tomUser
