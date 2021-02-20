@@ -56,6 +56,10 @@ public class User {
 	@OneToOne
 	private Address address;
 
+	@JsonProperty
+	@OneToOne
+	private UserAccount userAccount;
+	
 	public User() {
 	}
 //	@Column(name = "creation_time", nullable = false)
@@ -156,9 +160,22 @@ public class User {
 		this.address = address;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", email=" + email + ", address=" + address + "]";
+	/**
+	 * @return the userAccount
+	 */
+	public UserAccount getUserAccount() {
+		return userAccount;
 	}
+
+	/**
+	 * @param userAccount the userAccount to set
+	 */
+	public void setUserAccount(UserAccount userAccount) {
+		this.userAccount = userAccount;
+	}
+
+	
+	
+	
 
 }
