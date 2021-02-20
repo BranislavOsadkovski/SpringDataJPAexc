@@ -57,8 +57,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 //				.antMatchers(HttpMethod.DELETE,"/management/api/***").hasAuthority(ApplicationUserPermission.COURSE_WRITE.getPermission())				
 //				.antMatchers("/management/api/**").hasAnyRole(ApplicationUserRole.ADMIN.name(),ApplicationUserRole.ADMINTRAINEE.name())
 				
-//				.anyRequest()
-//				.authenticated()
+				.anyRequest()
+				.authenticated()
 				.and()
 				.formLogin()
 					.loginPage("/login")
