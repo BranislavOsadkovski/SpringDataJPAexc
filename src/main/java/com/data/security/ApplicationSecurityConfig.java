@@ -3,9 +3,13 @@
  */
 package com.data.security;
 
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,6 +20,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import com.data.service.AccountUserService;
 
 /**
  * @author Branislav
@@ -26,59 +33,69 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @EnableGlobalMethodSecurity(jsr250Enabled = true,prePostEnabled = true,securedEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 
-	@Autowired
+	
 	private final PasswordEncoder passwordEncoder;
-	
-
-	public ApplicationSecurityConfig(PasswordEncoder passwordEncoder) {
-	
+	private final AccountUserService accountUserService;
+	@Autowired
+	public ApplicationSecurityConfig(PasswordEncoder passwordEncoder,AccountUserService accountUserService) {
+		this.accountUserService=accountUserService;
 		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 			http														
-				.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())/** CookieCsrfTokenRepository => Read Class to gain insight of how the CSRF COokie is created */
-				.and()
+//				.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())/** CookieCsrfTokenRepository => Read Class to gain insight of how the CSRF COokie is created */
+//				.and()
+				.csrf().disable()	
 				.authorizeRequests()
-				.antMatchers("index","/","/css/*","/js/*").permitAll()
-				.antMatchers("api/**").hasRole(ApplicationUserRole.STUDENT.name()) 
+//				.antMatchers("index","/","/css/*","/js/*").permitAll()
+				.antMatchers("/api/**").permitAll()
 				// antMatcher ORDER MATTERS ide sekvencijalno!!!! 
 //				.antMatchers(HttpMethod.POST,"/management/api/***").hasAuthority(ApplicationUserPermission.COURSE_WRITE.getPermission())
 //				.antMatchers(HttpMethod.PUT,"/management/api/***").hasAuthority(ApplicationUserPermission.C OURSE_WRITE.getPermission())
 //				.antMatchers(HttpMethod.DELETE,"/management/api/***").hasAuthority(ApplicationUserPermission.COURSE_WRITE.getPermission())				
 //				.antMatchers("/management/api/**").hasAnyRole(ApplicationUserRole.ADMIN.name(),ApplicationUserRole.ADMINTRAINEE.name())
 				
-				.anyRequest()
-				.authenticated()
+//				.anyRequest()
+//				.authenticated()
 				.and()
-				.httpBasic();
+				.formLogin()
+					.loginPage("/login")
+					.permitAll()
+					.defaultSuccessUrl("/courses", true)
+					.passwordParameter("password")
+					.usernameParameter("username")
+				.and()
+				.rememberMe()
+					.tokenValiditySeconds((int)TimeUnit.DAYS.toSeconds(21))
+					.key("keysecured")
+					.rememberMeParameter("remember-me")
+				.and()
+				.logout()
+					.logoutUrl("/logout")
+					.logoutRequestMatcher(new AntPathRequestMatcher("/logout","GET")) // if csrf is enabled logout method should be POST considered best practice against csrf atacks
+					.clearAuthentication(true)
+					.invalidateHttpSession(true)
+					.deleteCookies("JSESSIONID","remember-me")
+					.logoutSuccessUrl("/login");
 	}
 
+
+	
+	
 	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.authenticationProvider(daoAuthenticationProvider());
+	}
+
 	@Bean
-	protected UserDetailsService userDetailsService() {
-		UserDetails baneUser = User.builder()
-						.username("bane")
-						.password(passwordEncoder.encode("password"))
-//						.roles(ApplicationUserRole.STUDENT.name()) //ROLE_STUDENT
-						.authorities(ApplicationUserRole.STUDENT.getGrantedAuthorities())
-						.build();
-		UserDetails mikiUser = User.builder()
-				.username("miki")
-				.password(passwordEncoder.encode("password"))
-//				.roles(ApplicationUserRole.ADMIN.name()) //ROLE_ADMMIN
-				.authorities(ApplicationUserRole.ADMIN.getGrantedAuthorities())
-				.build();
-		UserDetails tomUser = User.builder()
-				.username("tom")
-				.password(passwordEncoder.encode("password"))
-//				.roles(ApplicationUserRole.ADMINTRAINEE.name())  //ROLE_ADMINTRAINEE
-				.authorities(ApplicationUserRole.ADMINTRAINEE.getGrantedAuthorities())
-				.build();
-		return new InMemoryUserDetailsManager(
-				baneUser,mikiUser,tomUser
-				);
+	public DaoAuthenticationProvider daoAuthenticationProvider() {
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+		provider.setPasswordEncoder(passwordEncoder);
+		provider.setUserDetailsService(accountUserService);
+		return provider;
+		
 	}
 
 	

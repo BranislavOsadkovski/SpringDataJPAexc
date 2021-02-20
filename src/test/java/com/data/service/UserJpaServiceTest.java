@@ -15,8 +15,8 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.data.dao.UserJpaRepository;
 import com.data.entites.User;
+import com.data.repositories.UserJpaRepository;
 
 /**
  * @author Branislav

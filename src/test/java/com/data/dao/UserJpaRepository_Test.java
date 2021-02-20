@@ -18,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.data.entites.User;
+import com.data.repositories.UserJpaRepository;
 
 /**
  * @author Branislav

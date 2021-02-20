@@ -1,7 +1,7 @@
 /**
  * Copyright the original author or authors. 
  */
-package com.data.dao;
+package com.data.repositories;
 
 import java.util.List;
 

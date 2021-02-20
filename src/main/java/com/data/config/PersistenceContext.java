@@ -28,7 +28,7 @@ import com.zaxxer.hikari.HikariDataSource;
  */
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = { "com.data.dao" }) 
+@EnableJpaRepositories(basePackages = { "com.data.repositories" }) 
 public class PersistenceContext {
 	private static final String[] ENTITY_PACKAGES = {"com.data.entites"};
 

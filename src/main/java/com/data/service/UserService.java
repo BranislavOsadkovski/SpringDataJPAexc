@@ -9,9 +9,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
- 
-import com.data.dao.UserDAORepository; 
+
 import com.data.entites.User;
+import com.data.repositories.UserDAORepository;
 
 /**
  * @author Branislav
