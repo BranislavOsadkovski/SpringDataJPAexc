@@ -1,7 +1,7 @@
 /**
  * Copyright the original author or authors.
  */
-package com.data.entites;
+package com.data.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

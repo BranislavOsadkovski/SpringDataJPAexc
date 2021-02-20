@@ -90,9 +90,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
 		provider.setPasswordEncoder(passwordEncoder);
 		provider.setUserDetailsService(accountUserService);
 		return provider;
-		
 	}
-
+	
 	
 	
 }

@@ -1,33 +1,34 @@
 /**
  * Copyright the original author or authors.
  */
-package com.data.entites;
+package com.data.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 /**
  * @author Branislav
  *
  */
 @Entity
-public class City {
+public class Country {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private final int id;
-	@Column(name="name",length = 50)
+	@Column(name = "name", length = 50)
 	private final String name;
-	
-	@ManyToOne
-	private final Country country;
 
-	public City(int id, String name, Country country) {
+	/**
+	 * @param name must not be null
+	 */
+	public Country(int id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.country = country;
 	}
 
 	/**
@@ -44,11 +45,4 @@ public class City {
 		return name;
 	}
 
-	/**
-	 * @return the country
-	 */
-	public Country getCountry() {
-		return country;
-	}
- 
 }

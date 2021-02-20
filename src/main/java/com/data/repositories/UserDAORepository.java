@@ -6,7 +6,7 @@ package com.data.repositories;
 import java.util.List; 
 import org.springframework.data.repository.RepositoryDefinition;
 
-import com.data.entites.User;
+import com.data.entities.User;
 
 /**
  * @author Branislav

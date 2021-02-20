@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.data.entites.User;
+import com.data.entities.User;
 import com.data.repositories.UserJpaRepository;
 
 /**

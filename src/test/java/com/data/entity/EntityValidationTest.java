@@ -9,10 +9,11 @@ import javax.validation.Validator;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test; 
+import org.junit.jupiter.api.Test;
+
+import com.data.entities.User;
 
 import java.util.Set; 
-import com.data.entites.User; 
 
 /**
  * @author Branislav

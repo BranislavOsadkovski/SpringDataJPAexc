@@ -17,7 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.data.entites.User;
+import com.data.entities.User;
 import com.data.repositories.UserJpaRepository;
 
 /**

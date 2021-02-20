@@ -30,7 +30,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = { "com.data.repositories" }) 
 public class PersistenceContext {
-	private static final String[] ENTITY_PACKAGES = {"com.data.entites"};
+	private static final String[] ENTITY_PACKAGES = {"com.data.entities"};
 
 	@Bean(destroyMethod = "close")
 	DataSource dataSource(Environment env) {

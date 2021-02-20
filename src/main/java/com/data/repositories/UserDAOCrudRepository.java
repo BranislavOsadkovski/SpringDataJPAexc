@@ -9,7 +9,7 @@ import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.data.entites.User;
+import com.data.entities.User;
 
 /**
  * @author Branislav

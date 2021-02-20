@@ -1,9 +1,8 @@
 /**
  * Copyright the original author or authors.
  */
-package com.data.entites;
+package com.data.entities;
 
- import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -61,24 +60,14 @@ public class UserAccount implements UserDetails {
 	private ApplicationUserRole userRole;
  
 	public UserAccount() {}
-	/**
-	 * @param accountId
-	 * @param username
-	 * @param password
-	 * @param authorities
-	 * @param isAccountNonExpired
-	 * @param isAccountNonLocked
-	 * @param isCredentialsNonExpired
-	 * @param isEnabled must not be null
-	 */
-	public UserAccount(Long accountId, String username, String password, Set<? extends GrantedAuthority> authorities,
+	public UserAccount(Long accountId, String username, String password, ApplicationUserRole userRole,
 			boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired,
 			boolean isEnabled) {
-		 
 		this.accountId = accountId;
 		this.username = username;
 		this.password = password;
-		this.authorities = authorities;
+		this.userRole=userRole;
+		this.authorities = userRole.getGrantedAuthorities();
 		this.isAccountNonExpired = isAccountNonExpired;
 		this.isAccountNonLocked = isAccountNonLocked;
 		this.isCredentialsNonExpired = isCredentialsNonExpired;
@@ -86,23 +75,21 @@ public class UserAccount implements UserDetails {
 	}
 
  
-	public UserAccount(Long accountId, String username, String password,ApplicationUserRole userRole,
-			boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired,
-			boolean isEnabled) {
-		
-			this( accountId,  username,  password, userRole.getGrantedAuthorities(),
-					 isAccountNonExpired,  isAccountNonLocked,  isCredentialsNonExpired,
-					 isEnabled);
-	}
-	
-	
+//	public UserAccount(Long accountId, String username, String password,ApplicationUserRole userRole,
+//			boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired,
+//			boolean isEnabled) {
+//		
+//			this( accountId,  username,  password, userRole.getGrantedAuthorities(),
+//					 isAccountNonExpired,  isAccountNonLocked,  isCredentialsNonExpired,
+//					 isEnabled);
+//	} 
 	
 	public Long getAccountId() {
 		return accountId;
 	}
 	@Override
 	public Set<? extends GrantedAuthority> getAuthorities() {
-		return authorities;
+		return getUserRole().getGrantedAuthorities();
 	}
 	@Override
 	public String getUsername() {

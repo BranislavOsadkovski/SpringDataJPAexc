@@ -5,8 +5,7 @@ package com.data.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-
-import com.data.entites.UserAccount;
+import com.data.entities.UserAccount;
 
 /**
  * @author Branislav
