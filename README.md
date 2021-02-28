@@ -1,1 +1,1 @@
-**Spring Framework N-tier architecture**
+**Spring framework N-tier architecture**
